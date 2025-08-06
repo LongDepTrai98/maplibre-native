@@ -13,12 +13,9 @@ namespace gl {
 			Impl(); 
 			~Impl() = default;
         public: 
-			void resetState(); 
 			void createRenderer(threepp::WindowSize& size); 
-		public: 
-			bool isCreateRender{false}; 
 		public:
-			std::unique_ptr<threepp::GLRenderer> m_renderer{nullptr}; 
+			std::unique_ptr<threepp::GLRenderer> renderer{nullptr}; 
 	};
 }
 }
