@@ -46,12 +46,12 @@ public:
                                 gfx::IndexVectorBasePtr,
                                 const SegmentBase* segments,
                                 std::size_t segmentCount) override;
-    UniformBufferArrayGL t; 
+    UniformBufferArrayGL tmp_array_gl; 
 
 protected:
     //Impl them sau 
-    //class Impl;
-    //const std::unique_ptr<Impl> impl;
+    class Impl;
+    std::unique_ptr<Impl> impl;
 
     // For testing only.
 private:

@@ -19,6 +19,7 @@ option(MLN_USE_RUST "Use components in Rust" OFF)
 option(MLN_TEXT_SHAPING_HARFBUZZ "Use haffbuzz to shape complex text" ON)
 option(MLN_CORE_INCLUDE_DEPS "Include depdendencies in static build of core" OFF)
 option(MLN_CREATE_AUTORELEASEPOOL "Create autoreleasepool in render loop" OFF)
+option(MLN_WITH_THREEPP "Backend with threepp renderer" ON)
 
 if (MLN_LEGACY_RENDERER)
     message(FATAL "The legacy renderer is no longer supported")
@@ -1485,6 +1486,10 @@ target_link_libraries(
         $<$<BOOL:${MLN_USE_TRACY}>:TracyClient>
         unordered_dense
 )
+
+ if (MLN_WITH_THREEPP)
+        target_link_libraries(mbgl-core PRIVATE threepp::threepp)
+ endif()
 
 set(EXPORT_TARGETS
     mbgl-core
