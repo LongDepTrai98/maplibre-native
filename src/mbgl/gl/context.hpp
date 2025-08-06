@@ -111,6 +111,7 @@ public:
     void setCleanupOnDestruction(bool cleanup) { cleanupOnDestruction = cleanup; }
 
     gfx::UniqueDrawableBuilder createDrawableBuilder(std::string name) override;
+    gfx::UniqueDrawableBuilder createCustomDrawableBuilder(std::string name) override; 
     gfx::UniformBufferPtr createUniformBuffer(const void* data,
                                               std::size_t size,
                                               bool persistent = false,

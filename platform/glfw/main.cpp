@@ -217,7 +217,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    map.getStyle().loadURL(style);
+    map.getStyle().loadURL("https://raw.githubusercontent.com/maplibre/demotiles/gh-pages/style.json");
 
     view->run();
 

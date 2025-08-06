@@ -999,6 +999,8 @@ if(MLN_WITH_OPENGL)
         INCLUDE_FILES
             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/renderable_resource.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/renderer_backend.hpp
+            ${PROJECT_SOURCE_DIR}/include/mbgl/gl/drawable_custom_builder.hpp
+             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/drawable_custom.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/platform/gl_functions.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/shaders/shader_manifest.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/shaders/gl/shader_group_gl.hpp
@@ -1039,6 +1041,10 @@ if(MLN_WITH_OPENGL)
         SRC_FILES
             ${PROJECT_SOURCE_DIR}/src/mbgl/gl/attribute.cpp
             ${PROJECT_SOURCE_DIR}/src/mbgl/gl/attribute.hpp
+            ${PROJECT_SOURCE_DIR}/src/mbgl/gl/drawable_custom_builder.cpp
+            ${PROJECT_SOURCE_DIR}/src/mbgl/gl/drawable_custom.cpp
+            ${PROJECT_SOURCE_DIR}/src/mbgl/gl/drawable_custom_impl.hpp
+            ${PROJECT_SOURCE_DIR}/src/mbgl/gl/drawable_custom_impl.cpp
             ${PROJECT_SOURCE_DIR}/src/mbgl/gl/command_encoder.cpp
             ${PROJECT_SOURCE_DIR}/src/mbgl/gl/command_encoder.hpp
             ${PROJECT_SOURCE_DIR}/src/mbgl/gl/context.cpp

@@ -107,6 +107,9 @@ public:
     /// Create a new drawable builder
     virtual UniqueDrawableBuilder createDrawableBuilder(std::string name) = 0;
 
+    ///Create a custom drawable builder 
+    virtual UniqueDrawableBuilder createCustomDrawableBuilder(std::string name) = 0; 
+
     /// Create a new uniform buffer
     /// @param data The data to copy, may be `nullptr`
     /// @param size The size of the buffer

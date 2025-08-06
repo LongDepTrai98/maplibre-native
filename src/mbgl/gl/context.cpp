@@ -534,6 +534,10 @@ gfx::UniqueDrawableBuilder Context::createDrawableBuilder(std::string name) {
     return std::make_unique<gl::DrawableGLBuilder>(std::move(name));
 }
 
+gfx::UniqueDrawableBuilder Context::createCustomDrawableBuilder(std::string name) {
+    return gfx::UniqueDrawableBuilder();
+}
+
 gfx::UniformBufferPtr Context::createUniformBuffer(const void* data,
                                                    std::size_t size,
                                                    bool /*persistent*/,

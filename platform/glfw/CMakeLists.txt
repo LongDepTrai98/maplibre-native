@@ -1,3 +1,14 @@
+#add threepp 
+include(FetchContent)
+set(THREEPP_BUILD_TESTS OFF)
+set(THREEPP_BUILD_EXAMPLES OFF)
+set(THREEPP_WITH_GLFW OFF) # Disable default GLFW backend as we use WxWidgets
+FetchContent_Declare(
+        threepp
+        GIT_REPOSITORY https://github.com/markaren/threepp.git
+)
+FetchContent_MakeAvailable(threepp)
+
 if(WIN32)
     find_package(glfw3 REQUIRED)
     find_package(libuv REQUIRED)
@@ -23,6 +34,7 @@ include(${PROJECT_SOURCE_DIR}/vendor/tinyobjloader.cmake)
 
 target_link_libraries(
     mbgl-glfw
+    PRIVATE threepp::threepp
     PRIVATE tinyobjloader
 )
 
