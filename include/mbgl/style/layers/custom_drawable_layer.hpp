@@ -181,6 +181,8 @@ public:
                                      std::shared_ptr<gfx::IndexVector<gfx::Triangles>> indices,
                                      bool is3D);
 
+    void addCustomDrawable();
+
     /**
      * @brief Finish the current drawable building session
      *
@@ -216,9 +218,11 @@ private:
     };
 
     std::unique_ptr<gfx::DrawableBuilder> createBuilder(const std::string& name, gfx::ShaderPtr shader) const;
+    std::unique_ptr<gfx::DrawableBuilder> createCustomBuilder(const std::string& name) const;
     bool updateBuilder(BuilderType type, const std::string& name, gfx::ShaderPtr shader);
 
     std::unique_ptr<gfx::DrawableBuilder> builder;
+    std::unique_ptr<gfx::DrawableBuilder> custom_builder{nullptr}; 
     std::optional<OverscaledTileID> tileID;
 
     LineOptions lineOptions;

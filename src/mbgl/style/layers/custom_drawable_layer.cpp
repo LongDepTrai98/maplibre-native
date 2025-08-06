@@ -764,6 +764,18 @@ util::SimpleIdentity CustomDrawableLayerHost::Interface::addGeometry(
     return id;
 }
 
+void CustomDrawableLayerHost::Interface::addCustomDrawable() {
+    setTileID({11, 327, 792});
+    custom_builder = createCustomBuilder("threepp");
+    auto id = custom_builder->getCurrentDrawable(true)->getID(); 
+    custom_builder->customFlush(context); 
+    for (auto& drawable : custom_builder->clearDrawables()) {
+        TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
+        tileLayerGroup->addDrawable(RenderPass::Translucent, tileID.value(), std::move(drawable));
+
+    }
+}
+
 void CustomDrawableLayerHost::Interface::finish() {
     if (builder && !builder->empty()) {
         // flush current builder drawable
@@ -883,6 +895,16 @@ std::unique_ptr<gfx::DrawableBuilder> CustomDrawableLayerHost::Interface::create
     builder_->setRenderPass(RenderPass::Translucent);
 
     return builder_;
+}
+
+std::unique_ptr<gfx::DrawableBuilder> CustomDrawableLayerHost::Interface::createCustomBuilder(
+    const std::string& name) const {
+    std::unique_ptr<gfx::DrawableBuilder> builder_ = context.createCustomDrawableBuilder(name);
+    //builder_->setSubLayerIndex(0);
+    builder_->setEnableDepth(true);
+    //builder_->setColorMode(gfx::ColorMode::alphaBlended());
+    builder_->setRenderPass(RenderPass::Translucent);
+    return builder_; 
 }
 
 } // namespace style

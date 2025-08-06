@@ -25,6 +25,7 @@ void ExampleCustomDrawableStyleLayerHost::deinitialize() {}
 void ExampleCustomDrawableStyleLayerHost::update(Interface& interface) {
     // if we have built our drawable(s) already, either update or skip
     if (interface.getDrawableCount() == 0) {
+        interface.addCustomDrawable(); 
         createDrawables(interface);
         return;
     }
@@ -395,8 +396,8 @@ void ExampleCustomDrawableStyleLayerHost::createDrawables(Interface& interface) 
         interface.addPolyline(polyline_tile[1], Interface::LineShaderType::WideVector);
     }
 
-    generateGeometry(interface);
-    loadGeometry(interface);
+    //generateGeometry(interface);
+    //loadGeometry(interface);
 
     // finish
     interface.finish();

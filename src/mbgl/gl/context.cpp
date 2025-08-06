@@ -19,6 +19,7 @@
 
 #include <mbgl/gl/drawable_gl.hpp>
 #include <mbgl/gl/drawable_gl_builder.hpp>
+#include <mbgl/gl/drawable_custom_builder.hpp>
 #include <mbgl/gl/layer_group_gl.hpp>
 #include <mbgl/gl/uniform_buffer_gl.hpp>
 #include <mbgl/gl/texture2d.hpp>
@@ -530,12 +531,12 @@ void Context::setDirtyState() {
 
 gfx::UniqueDrawableBuilder Context::createDrawableBuilder(std::string name) {
     MLN_TRACE_FUNC();
-
     return std::make_unique<gl::DrawableGLBuilder>(std::move(name));
 }
 
 gfx::UniqueDrawableBuilder Context::createCustomDrawableBuilder(std::string name) {
-    return gfx::UniqueDrawableBuilder();
+    MLN_TRACE_FUNC();
+    return std::make_unique<gl::DrawableCustomBuilder>(std::move(name)); 
 }
 
 gfx::UniformBufferPtr Context::createUniformBuffer(const void* data,

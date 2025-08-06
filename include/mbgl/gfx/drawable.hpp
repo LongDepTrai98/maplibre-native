@@ -50,6 +50,12 @@ using Texture2DPtr = std::shared_ptr<Texture2D>;
 using VertexAttributeArrayPtr = std::shared_ptr<VertexAttributeArray>;
 
 class Drawable {
+public: 
+    enum class DrawableType {
+        DrawableGL,
+        DrawableCustom,
+        Other
+    };
 public:
     /// @brief Array of textures to bind
     using Textures = std::array<gfx::Texture2DPtr, shaders::maxTextureCountPerShader>;
@@ -277,8 +283,10 @@ public:
 
     const std::chrono::duration<double> createTime = util::MonotonicTimer::now();
     std::optional<std::chrono::duration<double>> getAttributeUpdateTime() const { return attributeUpdateTime; }
+    const DrawableType& getDrawType() { return draw_type; };
 
 protected:
+    DrawableType draw_type{DrawableType::DrawableGL}; 
     bool enabled = true;
     bool enableColor = true;
     bool enableStencil = false;

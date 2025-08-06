@@ -42,6 +42,7 @@ public:
 
     /// Close the current drawable, using a new one for any further work
     void flush(gfx::Context& context);
+    virtual void customFlush(gfx::Context& context) {}; 
 
     /// Get all the completed drawables
     const std::vector<UniqueDrawable>& getDrawables() const { return drawables; }

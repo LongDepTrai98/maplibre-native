@@ -6,6 +6,7 @@
 #include <mbgl/gfx/renderer_backend.hpp>
 #include <mbgl/gfx/upload_pass.hpp>
 #include <mbgl/gl/drawable_gl.hpp>
+#include <mbgl/gl/drawable_custom.hpp>
 #include <mbgl/renderer/paint_parameters.hpp>
 #include <mbgl/shaders/gl/shader_program_gl.hpp>
 #include <mbgl/util/convert.hpp>
@@ -31,19 +32,26 @@ void TileLayerGroupGL::upload(gfx::UploadPass& uploadPass) {
         if (!drawable.getEnabled()) {
             return;
         }
-
-        auto& drawableGL = static_cast<gl::DrawableGL&>(drawable);
+        //drawabel gl 
+        if (drawable.getDrawType() == gfx::Drawable::DrawableType::DrawableGL) {
+            auto& drawableGL = static_cast<gl::DrawableGL&>(drawable);
 
 #if !defined(NDEBUG)
-        std::string label;
-        if (const auto& tileID = drawable.getTileID()) {
-            label = drawable.getName() + "/" + util::toString(*tileID);
-        }
-        const auto labelPtr = (label.empty() ? drawable.getName() : label).c_str();
-        const auto debugGroup = uploadPass.createDebugGroup(labelPtr);
+            std::string label;
+            if (const auto& tileID = drawable.getTileID()) {
+                label = drawable.getName() + "/" + util::toString(*tileID);
+            }
+            const auto labelPtr = (label.empty() ? drawable.getName() : label).c_str();
+            const auto debugGroup = uploadPass.createDebugGroup(labelPtr);
 #endif
+            drawableGL.upload(uploadPass);
+        }
+        else if (drawable.getDrawType() == gfx::Drawable::DrawableType::DrawableCustom)
+        {
+            auto& customDrawable = static_cast<gl::DrawableCustom&>(drawable);
+            customDrawable.upload(uploadPass); 
+        }
 
-        drawableGL.upload(uploadPass);
     });
 }
 
