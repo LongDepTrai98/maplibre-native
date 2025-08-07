@@ -113,7 +113,6 @@ public:
             layerUniforms = parameters.context.createLayerUniformBufferArray();
         }
 #endif
-
         const UnwrappedTileID tileID = drawable.getTileID()->toUnwrapped();
         const auto zoom = parameters.state.getZoom();
 
@@ -765,14 +764,14 @@ util::SimpleIdentity CustomDrawableLayerHost::Interface::addGeometry(
 }
 
 void CustomDrawableLayerHost::Interface::addCustomDrawable() {
-    setTileID({11, 327, 792});
+    setTileID({16, 52186, 30788});
     custom_builder = createCustomBuilder("threepp");
     auto id = custom_builder->getCurrentDrawable(true)->getID(); 
     custom_builder->customFlush(context); 
     for (auto& drawable : custom_builder->clearDrawables()) {
         TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
+        drawable->setTileID(tileID.value());
         tileLayerGroup->addDrawable(RenderPass::Translucent, tileID.value(), std::move(drawable));
-
     }
 }
 

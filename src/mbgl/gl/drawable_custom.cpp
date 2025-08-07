@@ -11,6 +11,7 @@
 #include <mbgl/util/logging.hpp>
 #include <mbgl/gfx/drawable_impl.hpp>
 #include <mbgl/renderer/paint_parameters.hpp>
+#include <mbgl/renderer/layer_tweaker.hpp>
 namespace mbgl {
 namespace gl {
     class StateGuard
@@ -156,6 +157,8 @@ public:
 DrawableCustom::DrawableCustom(std::string name_) : Drawable(std::move(name_)),impl(std::make_unique<Impl>())
 {
     draw_type = DrawableType::DrawableCustom;
+    std::shared_ptr<style::CustomDrawableTweaker> tweaker = std::make_shared<style::CustomDrawableTweaker>(); 
+    addTweaker(tweaker); 
 }
 DrawableCustom::~DrawableCustom() {}
 void DrawableCustom::draw(PaintParameters& parameters) const {
@@ -165,11 +168,21 @@ void DrawableCustom::draw(PaintParameters& parameters) const {
     //  Framebuffer binding
     StateGuard guard; 
     {
+        glDisable(GL_STENCIL_TEST); 
         threepp::WindowSize w_size(viewport.width, viewport.height);
         if (!impl->renderer) {
             impl->createRenderer(w_size);
+            return; 
         }
-        glDisable(GL_STENCIL_TEST);
+        if (!getTileID().has_value()) {
+            return; 
+        }
+        const UnwrappedTileID tileID = getTileID()->toUnwrapped();
+        if (tweakers.size() != 0) {
+            style::CustomDrawableTweaker* tweaker = static_cast<style::CustomDrawableTweaker*>(tweakers[0].get());
+            //apply matrix
+            auto tile_matrix = tweaker->tile_matrix; 
+        }
         impl->renderer->setSize(w_size);
         impl->renderer->resetState(); 
         impl->renderer->state(); 
@@ -193,3 +206,18 @@ void DrawableCustom::updateVertexAttributes(gfx::VertexAttributeArrayPtr,
                                             std::size_t segmentCount) {}
 } // namespace gl
 } // namespace mbgl
+
+void mbgl::style::CustomDrawableTweaker::init(gfx::Drawable&) 
+{
+    /*INIT for custom drawable*/
+}
+
+void mbgl::style::CustomDrawableTweaker::execute(gfx::Drawable& drawable, PaintParameters& parameters)
+{
+    if (!drawable.getTileID().has_value()) {
+        return;
+    }
+    const UnwrappedTileID tileID = drawable.getTileID()->toUnwrapped();
+    tile_matrix = LayerTweaker::getTileMatrix(
+        tileID, parameters, {{0, 0}}, style::TranslateAnchorType::Viewport, false, false, drawable, false);
+}

@@ -103,11 +103,12 @@ int main(int argc, char* argv[]) {
     const char* apikeyEnv = getenv("MLN_API_KEY");
     const std::string apikey = apikeyValue ? args::get(apikeyValue) : (apikeyEnv ? apikeyEnv : std::string());
 
-    auto mapTilerConfiguration = mbgl::TileServerOptions::MapTilerConfiguration();
+    auto MapboxConfiguration = mbgl::TileServerOptions::MapboxConfiguration();
     mbgl::ResourceOptions resourceOptions;
-    resourceOptions.withCachePath(cacheDB).withApiKey(apikey).withTileServerOptions(mapTilerConfiguration);
+    const std::string api_key = "pk.eyJ1IjoiYW5odHVzeHl6IiwiYSI6ImNsdng4ZGp3ZTA2aDgyaWw3ZnM2NXJhcjcifQ.OV7YSJsVT8zY-L4tozXaVw"; 
+    resourceOptions.withApiKey(api_key).withTileServerOptions(MapboxConfiguration);
     mbgl::ClientOptions clientOptions;
-    auto orderedStyles = mapTilerConfiguration.defaultStyles();
+    auto orderedStyles = MapboxConfiguration.defaultStyles();
 
     GLFWView backend(fullscreen, benchmark, resourceOptions, clientOptions);
     view = &backend;
@@ -141,8 +142,8 @@ int main(int argc, char* argv[]) {
     }
 
     map.jumpTo(mbgl::CameraOptions()
-                   .withCenter(mbgl::LatLng{settings.latitude, settings.longitude})
-                   .withZoom(settings.zoom)
+                   .withCenter(mbgl::LatLng{10.810507389340282, 106.66832163838852})
+                   .withZoom(16)
                    .withBearing(settings.bearing)
                    .withPitch(settings.pitch));
     map.setDebug(mbgl::MapDebugOptions(settings.debug));
@@ -217,7 +218,12 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    map.getStyle().loadURL("https://raw.githubusercontent.com/maplibre/demotiles/gh-pages/style.json");
+    //std::ifstream file("D:\\vbd_style.json");
+    //std::stringstream buffer;
+    //buffer << file.rdbuf();
+    //std::string styleJSON = buffer.str();
+
+    map.getStyle().loadURL(orderedStyles[0].getUrl());
 
     view->run();
 

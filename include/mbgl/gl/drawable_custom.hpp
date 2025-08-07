@@ -1,6 +1,7 @@
 #pragma once
 #include <mbgl/gfx/drawable.hpp>
 #include <mbgl/gfx/draw_mode.hpp>
+#include <mbgl/gfx/drawable_tweaker.hpp>
 #include <mbgl/gl/vertex_array.hpp>
 #include <mbgl/gl/vertex_attribute_gl.hpp>
 #include <mbgl/gl/uniform_buffer_gl.hpp>
@@ -10,6 +11,17 @@ namespace mbgl {
 
 class SegmentBase;
 class PaintParameters;
+namespace style {
+class CustomDrawableTweaker : public gfx::DrawableTweaker {
+public:
+    CustomDrawableTweaker() = default; 
+    ~CustomDrawableTweaker() override = default;
+    void init(gfx::Drawable&) override; 
+    void execute(gfx::Drawable& drawable, PaintParameters& parameters) override; 
+    public: 
+        mbgl::mat4 tile_matrix; 
+};
+}
 
 namespace gfx {
 
