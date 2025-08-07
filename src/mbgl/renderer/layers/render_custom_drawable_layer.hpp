@@ -24,7 +24,7 @@ private:
     bool hasTransition() const override;
     bool hasCrossfade() const override;
     void prepare(const LayerPrepareParameters&) override;
-
+    bool is3D() const override;
     std::shared_ptr<style::CustomDrawableLayerHost> host;
 };
 

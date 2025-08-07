@@ -14,8 +14,11 @@ namespace gl {
 			~Impl() = default;
         public: 
 			void createRenderer(threepp::WindowSize& size); 
+			void render(); 
 		public:
 			std::unique_ptr<threepp::GLRenderer> renderer{nullptr}; 
+			std::unique_ptr<threepp::Scene> scene{nullptr}; 
+			std::unique_ptr<threepp::Camera> camera{nullptr}; 
 	};
 }
 }

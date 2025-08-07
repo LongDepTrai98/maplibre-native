@@ -39,7 +39,7 @@ RenderCustomDrawableLayer::~RenderCustomDrawableLayer() {
 }
 
 void RenderCustomDrawableLayer::evaluate(const PropertyEvaluationParameters&) {
-    passes = RenderPass::Translucent;
+    passes = RenderPass::Pass3D;
     // It is fine to not update `evaluatedProperties`, as `baseImpl` should never be updated for this layer.
 }
 
@@ -51,6 +51,10 @@ bool RenderCustomDrawableLayer::hasCrossfade() const {
 }
 
 void RenderCustomDrawableLayer::prepare(const LayerPrepareParameters&) {}
+
+bool RenderCustomDrawableLayer::is3D() const {
+    return true;
+}
 
 void RenderCustomDrawableLayer::update(gfx::ShaderRegistry& shaders,
                                        gfx::Context& context,
@@ -68,6 +72,7 @@ void RenderCustomDrawableLayer::update(gfx::ShaderRegistry& shaders,
         host = impl(baseImpl).host;
         host->initialize();
     }
+    auto t = baseImpl->getTypeInfo();
 
     // delegate the call to the custom layer
     if (host) {

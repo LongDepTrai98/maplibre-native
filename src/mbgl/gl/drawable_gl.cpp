@@ -41,7 +41,10 @@ void DrawableGL::draw(PaintParameters& parameters) const {
         assert(false);
         return;
     }
-
+    if (getIs3D())
+    {
+        int a = 3; 
+    }
     if (enableDepth) {
         context.setDepthMode(getIs3D() ? parameters.depthModeFor3D()
                                        : parameters.depthModeForSublayer(getSubLayerIndex(), getDepthType()));
