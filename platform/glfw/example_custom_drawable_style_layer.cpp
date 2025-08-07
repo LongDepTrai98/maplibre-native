@@ -25,7 +25,7 @@ void ExampleCustomDrawableStyleLayerHost::deinitialize() {}
 void ExampleCustomDrawableStyleLayerHost::update(Interface& interface) {
     // if we have built our drawable(s) already, either update or skip
     if (interface.getDrawableCount() == 0) {
-        //interface.addCustomDrawable(); 
+        interface.addCustomDrawable(); 
         createDrawables(interface);
         return;
     }

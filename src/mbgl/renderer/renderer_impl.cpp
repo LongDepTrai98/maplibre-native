@@ -359,7 +359,7 @@ void Renderer::Impl::render(const RenderTree& renderTree, const std::shared_ptr<
         // draw layer groups, opaque pass
         parameters.currentLayer = 0;
         orchestrator.visitLayerGroupsReversed([&](LayerGroupBase& layerGroup) {
-            //layerGroup.render(orchestrator, parameters);
+            layerGroup.render(orchestrator, parameters);
             parameters.currentLayer++;
         });
     };
