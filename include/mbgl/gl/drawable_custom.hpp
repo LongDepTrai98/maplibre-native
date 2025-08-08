@@ -59,21 +59,10 @@ public:
                                 const SegmentBase* segments,
                                 std::size_t segmentCount) override;
     UniformBufferArrayGL tmp_array_gl; 
-
 protected:
-    //Impl them sau 
     class Impl;
     std::unique_ptr<Impl> impl;
-
-    // For testing only.
 private:
-    /*gfx::ColorMode makeColorMode(PaintParameters&) const;
-    gfx::StencilMode makeStencilMode(PaintParameters&) const;
-
-    void uploadTextures() const;
-
-    void bindTextures() const;
-    void unbindTextures() const;*/
 };
 }
 } // namespace mbgl
