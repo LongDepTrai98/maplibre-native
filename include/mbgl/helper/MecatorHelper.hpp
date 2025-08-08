@@ -22,6 +22,14 @@ namespace mbgl
 			{
 				return scaleZ * pixelZ; 
 			}
+            static double solveZoomLevelFor1MeterPerPixel(const double& targetMetersPerPixel = 1.0,int tileSize = 512) {
+				const double pi = 3.141592653589793238462643383279502884197169;
+				const double earth_radius = 6378137.0;
+				double earthCircumference = 2 * pi * earth_radius;
+				double worldSizePixels = earthCircumference / targetMetersPerPixel;
+				double zoom = std::log2(worldSizePixels / tileSize);
+				return zoom;
+            }
         private: 
 			MecatorHelper(); 
 		};

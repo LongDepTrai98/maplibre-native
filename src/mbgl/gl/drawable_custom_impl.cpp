@@ -35,6 +35,7 @@ namespace mbgl
                 scene->add(sphere); 
                 const auto boxGeometry = threepp::BoxGeometry::create(200,200,200);
                 const auto boxMaterial = threepp::MeshBasicMaterial::create();
+                auto zoom = MecatorHelper::solveZoomLevelFor1MeterPerPixel(); 
                 boxMaterial->color.setRGB(1, 0, 0);
                 boxMaterial->transparent = true;
                 boxMaterial->opacity = 0.5f;
