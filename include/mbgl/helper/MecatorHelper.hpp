@@ -18,6 +18,10 @@ namespace mbgl
 				double scaleZ = 1.0 / scale; 
 				return scaleZ; 
 			}
+			static double pixelToMeter(const double& scaleZ, const double& pixelZ)
+			{
+				return scaleZ * pixelZ; 
+			}
         private: 
 			MecatorHelper(); 
 		};
