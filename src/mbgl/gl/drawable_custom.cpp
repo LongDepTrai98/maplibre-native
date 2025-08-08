@@ -12,7 +12,6 @@
 #include <mbgl/gfx/drawable_impl.hpp>
 #include <mbgl/renderer/paint_parameters.hpp>
 #include <mbgl/renderer/layer_tweaker.hpp>
-#include <iostream>
 namespace mbgl {
 namespace gl {
     class StateGuard
