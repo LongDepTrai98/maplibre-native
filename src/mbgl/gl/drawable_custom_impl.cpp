@@ -26,11 +26,11 @@ namespace mbgl
                 const auto sphereMaterial = threepp::MeshBasicMaterial::create();
                 sphereMaterial->color = threepp::Color::darkgray;
                 sphereMaterial->side = threepp::Side::Double;
-                sphereMaterial->wireframe = true; 
+                sphereMaterial->wireframe = false; 
                 float scale_z = static_cast<float>(MecatorHelper::computeScaleZForLevel(16));
                 auto sphere = threepp::Mesh::create(sphereGeometry, sphereMaterial);
                 sphere->scale.set(1.0, 1.0, scale_z); 
-                auto meter = MecatorHelper::pixelToMeter(scale_z, 700); 
+                auto meter = MecatorHelper::pixelToMeter(scale_z, 150); 
                 std::cout << meter << std::endl; 
                 sphere->position.set(4096.0,4096.0,static_cast<float>(meter)); 
                 scene->add(sphere); 
