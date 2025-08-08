@@ -20,22 +20,17 @@ namespace mbgl
                 scene = std::make_unique<threepp::Scene>();
 
                 threepp::STLLoader loader; 
-                auto geo = loader.load("D:\\GITHUB\\IFCRender\\IFCRender\\assets\\models\\cube.stl"); 
+                auto geo = loader.load("C:\\Users\\vbd\\Downloads\\39-stl\\stl\\Dragon 2.5_stl.stl"); 
                 const auto sphereGeometry = threepp::SphereGeometry::create(300);
                 const auto sphereMaterial = threepp::MeshBasicMaterial::create();
-                sphereMaterial->color.setHex(0x00ff00);
-                ////sphereMaterial->depthFunc = threepp::DepthFunc::LessEqual; 
-                //sphereMaterial->depthTest = true;
-                //sphereMaterial->depthWrite = true; 
+                sphereMaterial->color = threepp::Color::darkgray;
                 sphereMaterial->side = threepp::Side::Double;
-                sphereMaterial->wireframe = true;
                 auto sphere = threepp::Mesh::create(sphereGeometry, sphereMaterial);
-                sphere->scale.set(1.0, 1.0, 0.08); 
-                ////sphere->position.set(0.0f,10.0f, 0.0f);
-                //geo->rotateX(-M_PI * 0.5); 
-                //geo->scale(1.0, 1.0, 0.08); 
-                //scene->add(sphere); 
-                scene->add(sphere); 
+                sphere->scale.set(1.0, 1.0, 0.0747); 
+                sphere->position.set(4096.0,4096.0,0.0f); 
+                auto mesh = threepp::Mesh::create(geo,sphereMaterial);
+                mesh->scale.set(1.0, 1.0, 0.0747);
+                scene->add(mesh); 
             }
         }
         void DrawableCustom::Impl::render() 

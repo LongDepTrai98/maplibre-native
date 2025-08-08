@@ -998,10 +998,11 @@ if(MLN_WITH_OPENGL)
     )
     list(APPEND
         INCLUDE_FILES
+            ${PROJECT_SOURCE_DIR}/include/helper/MecatorHelper.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/renderable_resource.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/renderer_backend.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/drawable_custom_builder.hpp
-             ${PROJECT_SOURCE_DIR}/include/mbgl/gl/drawable_custom.hpp
+            ${PROJECT_SOURCE_DIR}/include/mbgl/gl/drawable_custom.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/platform/gl_functions.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/shaders/shader_manifest.hpp
             ${PROJECT_SOURCE_DIR}/include/mbgl/shaders/gl/shader_group_gl.hpp
