@@ -1,4 +1,4 @@
-// Generated code, do not modify this file!
+﻿// Generated code, do not modify this file!
 #pragma once
 #include <mbgl/shaders/shader_source.hpp>
 
