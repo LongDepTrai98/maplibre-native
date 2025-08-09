@@ -44,10 +44,10 @@ void RenderCustomDrawableLayer::evaluate(const PropertyEvaluationParameters&) {
 }
 
 bool RenderCustomDrawableLayer::hasTransition() const {
-    return false;
+    return true;
 }
 bool RenderCustomDrawableLayer::hasCrossfade() const {
-    return false;
+    return true;
 }
 
 void RenderCustomDrawableLayer::prepare(const LayerPrepareParameters&) {}
@@ -72,8 +72,6 @@ void RenderCustomDrawableLayer::update(gfx::ShaderRegistry& shaders,
         host = impl(baseImpl).host;
         host->initialize();
     }
-    auto t = baseImpl->getTypeInfo();
-
     // delegate the call to the custom layer
     if (host) {
         CustomDrawableLayerHost::Interface interface(
