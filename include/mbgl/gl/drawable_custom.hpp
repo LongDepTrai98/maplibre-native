@@ -58,6 +58,8 @@ public:
                                 gfx::IndexVectorBasePtr,
                                 const SegmentBase* segments,
                                 std::size_t segmentCount) override;
+
+public: 
     UniformBufferArrayGL tmp_array_gl; 
 protected:
     class Impl;

@@ -1,9 +1,15 @@
 #include <mbgl/gfx/drawable_impl.hpp>
 #include <mbgl/renderer/paint_parameters.hpp>
 #include <mbgl/gl/drawable_custom.hpp>
+#include <threepp/canvas/WindowSize.hpp>
 #include <memory>
 #include <vector>
-#include <threepp/threepp.hpp>
+namespace threepp
+{
+	class GLRenderer; 
+	class Scene; 
+	class Camera; 
+};
 namespace mbgl{
 namespace gl {
 	using namespace platform;
