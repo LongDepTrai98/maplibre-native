@@ -53,9 +53,11 @@ public:
     std::size_t getDrawableCount() const;
     void setTileID(OverscaledTileID tileID);
     void addCustomDrawable();
+    void addCustomDrawableWithTile(mbgl::OverscaledTileID tileID); 
     void removeDrawable(const util::SimpleIdentity& id);
 
 public:
+    std::string m_BuilderName{"custom-3d"}; 
     RenderLayer& layer;
     LayerGroupBasePtr& layerGroup;
     gfx::Context& context;
