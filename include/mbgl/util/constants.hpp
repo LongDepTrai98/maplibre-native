@@ -32,12 +32,12 @@ constexpr double LATITUDE_MAX = 85.051128779806604;
 constexpr double LONGITUDE_MAX = 180;
 constexpr double DEGREES_MAX = 360;
 constexpr double PITCH_MIN = 0.0;
-constexpr double PITCH_MAX = M_PI / 3;
+constexpr double PITCH_MAX = M_PI / 2;
 constexpr double MIN_ZOOM = 0.0;
-constexpr double MAX_ZOOM = 25.5;
+constexpr double MAX_ZOOM = 30.5;
 constexpr float MIN_ZOOM_F = MIN_ZOOM;
 constexpr float MAX_ZOOM_F = MAX_ZOOM;
-constexpr uint8_t DEFAULT_MAX_ZOOM = 22;
+constexpr uint8_t DEFAULT_MAX_ZOOM = 30.5;
 
 // ONE_EM constant used to go between "em" units used in style spec and "points" used internally for layout.
 constexpr float ONE_EM = 24.0f;
