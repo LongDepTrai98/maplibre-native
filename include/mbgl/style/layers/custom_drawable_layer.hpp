@@ -55,8 +55,9 @@ public:
     void addCustomDrawable();
     void addCustomDrawableWithTile(mbgl::OverscaledTileID tileID); 
     void removeDrawable(const util::SimpleIdentity& id);
+    LayerGroupBasePtr& getLayerGroupBase(); 
 
-public:
+protected:
     std::string m_BuilderName{"custom-3d"}; 
     RenderLayer& layer;
     LayerGroupBasePtr& layerGroup;

@@ -21,7 +21,7 @@ namespace mbgl
             if (!scene) 
 			{
                 scene = std::make_unique<threepp::Scene>();
-                const auto sphereGeometry = threepp::SphereGeometry::create(300);
+                /*const auto sphereGeometry = threepp::SphereGeometry::create(300);
                 const auto sphereMaterial = threepp::MeshLambertMaterial::create();
                 sphereMaterial->color = threepp::Color::darkgray;
                 sphereMaterial->side = threepp::Side::Double;
@@ -40,7 +40,7 @@ namespace mbgl
                 auto box = threepp::Mesh::create(boxGeometry, boxMaterial);
                 box->scale.set(1.0, 1.0, scale_z); 
                 box->position.set(0.0, 0.0, static_cast<float>(MecatorHelper::pixelToMeter(scale_z,100)));
-                scene->add(box); 
+                scene->add(box); */
                 auto a_light = threepp::AmbientLight::create(0xffffee, std::optional(0.4f));
                 scene->add(a_light);
                 std::shared_ptr<threepp::Light> directionalLight1 = threepp::DirectionalLight::create(0xffeeff, std::optional(0.7f));

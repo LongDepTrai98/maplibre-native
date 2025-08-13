@@ -225,6 +225,11 @@ namespace gl {
                                                 gfx::IndexVectorBasePtr,
                                                 const SegmentBase* segments,
                                                 std::size_t segmentCount) {}
+
+    DrawableCustom::Impl* DrawableCustom::getImpl() const {
+        return impl.get();
+    }
+
     } // namespace gl
     } // namespace mbgl
 

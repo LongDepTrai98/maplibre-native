@@ -283,7 +283,7 @@ public:
 
     const std::chrono::duration<double> createTime = util::MonotonicTimer::now();
     std::optional<std::chrono::duration<double>> getAttributeUpdateTime() const { return attributeUpdateTime; }
-    const DrawableType& getDrawType() { return draw_type; };
+    DrawableType getDrawType() const { return draw_type; };
 
 protected:
     DrawableType draw_type{DrawableType::DrawableGL}; 

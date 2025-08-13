@@ -146,12 +146,19 @@ void CustomDrawableLayerHost::Interface::addCustomDrawableWithTile(mbgl::Oversca
         drawable->setIs3D(true);
         tileLayerGroup->addDrawable(RenderPass::Translucent, tileID.value(), std::move(drawable));
     }
+    TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
 }
 
 void CustomDrawableLayerHost::Interface::removeDrawable(const util::SimpleIdentity& id) {
     TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
     tileLayerGroup->removeDrawablesIf([&](gfx::Drawable& drawable) { return drawable.getID() == id; });
 }
+
+LayerGroupBasePtr& CustomDrawableLayerHost::Interface::getLayerGroupBase() {
+    return layerGroup; 
+}
+
+
 
 std::unique_ptr<gfx::DrawableBuilder> CustomDrawableLayerHost::Interface::createCustomBuilder(
     const std::string& name) const {
