@@ -55,6 +55,8 @@ public:
     void addCustomDrawable();
     void addCustomDrawableWithTile(mbgl::OverscaledTileID tileID); 
     void removeDrawable(const util::SimpleIdentity& id);
+    /*USE FOR RAYCASTER*/
+    void updatePosMouseNor(float nor_x,float nor_y); 
     LayerGroupBasePtr& getLayerGroupBase(); 
 
 protected:

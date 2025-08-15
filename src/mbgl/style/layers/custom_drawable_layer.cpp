@@ -30,7 +30,8 @@
 #include <mbgl/util/mat4.hpp>
 #include <mbgl/renderer/render_tile.hpp>
 #include <mbgl/gfx/uniform_buffer.hpp>
-
+#include <mbgl/gl/drawable_custom.hpp>
+#include <mbgl/gl/drawable_custom_impl.hpp>
 #include <cmath>
 
 namespace mbgl {
@@ -152,6 +153,25 @@ void CustomDrawableLayerHost::Interface::addCustomDrawableWithTile(mbgl::Oversca
 void CustomDrawableLayerHost::Interface::removeDrawable(const util::SimpleIdentity& id) {
     TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
     tileLayerGroup->removeDrawablesIf([&](gfx::Drawable& drawable) { return drawable.getID() == id; });
+}
+
+void CustomDrawableLayerHost::Interface::updatePosMouseNor(float nor_x, float nor_y) {
+        TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
+        tileLayerGroup->visitDrawables([&](const mbgl::gfx::Drawable& drawable) {
+        if (drawable.getDrawType() == mbgl::gfx::Drawable::DrawableType::DrawableCustom)
+        {
+            const mbgl::gfx::Drawable* ptrDrawable = &drawable;
+            const mbgl::gl::DrawableCustom* ptrDrawableCustom = static_cast<const mbgl::gl::DrawableCustom*>(
+                ptrDrawable);
+            if (ptrDrawableCustom) {
+                auto impl = ptrDrawableCustom->getImpl();
+                if (impl)
+                {
+                    impl->setRayMouse(nor_x,nor_y); 
+                }
+            }
+        }
+        }); 
 }
 
 LayerGroupBasePtr& CustomDrawableLayerHost::Interface::getLayerGroupBase() {

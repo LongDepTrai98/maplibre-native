@@ -8,8 +8,10 @@ namespace threepp
 {
 	class GLRenderer; 
 	class Scene; 
-	class Camera; 
-};
+	class Camera;
+    class PerspectiveCamera;
+    class Raycaster; 
+    };
 namespace mbgl{
 namespace gl {
 	using namespace platform;
@@ -20,11 +22,13 @@ namespace gl {
 			~Impl() = default;
         public: 
 			void createRenderer(threepp::WindowSize& size); 
-			void render(); 
+			void render();
+            void setRayMouse(float norX, float norY); 
 		public:
 			std::unique_ptr<threepp::GLRenderer> renderer{nullptr}; 
 			std::unique_ptr<threepp::Scene> scene{nullptr}; 
-			std::unique_ptr<threepp::Camera> camera{nullptr}; 
+			std::unique_ptr<threepp::PerspectiveCamera> camera{nullptr};
+            std::unique_ptr<threepp::Raycaster> ray{nullptr};  
 	};
 }
 }

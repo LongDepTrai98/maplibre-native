@@ -187,6 +187,7 @@ namespace gl {
         context.setDepthMode(parameters.depthModeFor3D());
         auto viewport = context.viewport.getCurrentValue().size; 
         //3d 
+        auto lat_lon = parameters.transformParams.state.getLatLng(); 
         StateGuard guard; 
         TextureGuard t_2d(GL_TEXTURE_2D); 
         TextureGuard t_cube(GL_TEXTURE_CUBE_MAP); 
@@ -203,9 +204,12 @@ namespace gl {
                 threepp::Matrix4 tile_three_matrix; 
                 tile_three_matrix.fromArray(tile_matrix);
                 impl->camera->projectionMatrix = tile_three_matrix; 
+                impl->camera->projectionMatrixInverse.copy(impl->camera->projectionMatrix).invert();
+                impl->camera->updateMatrixWorld(true);
+                impl->camera->updateWorldMatrix(true,true);
             }
             impl->renderer->setSize(w_size);
-            impl->renderer->resetState(); 
+            impl->renderer->resetState();  
             impl->render(); 
         }
     }
