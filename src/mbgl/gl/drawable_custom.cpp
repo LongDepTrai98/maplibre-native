@@ -1,4 +1,4 @@
-#include <mbgl/gl/drawable_custom.hpp>
+﻿#include <mbgl/gl/drawable_custom.hpp>
 #include <mbgl/gl/texture2d.hpp>
 #include <mbgl/gl/upload_pass.hpp>
 #include <mbgl/gl/vertex_array.hpp>
@@ -12,7 +12,10 @@
 #include <mbgl/gfx/drawable_impl.hpp>
 #include <mbgl/renderer/paint_parameters.hpp>
 #include <mbgl/renderer/layer_tweaker.hpp>
+#include <mbgl/util/constants.hpp>
 #include <threepp/threepp.hpp>
+#include <threepp/helpers/CameraHelper.hpp>
+#include <cmath>
 namespace mbgl {
 namespace gl {
     class StateGuard
@@ -134,6 +137,39 @@ namespace gl {
         GLboolean scisscor_enabled;
         GLint scissorBox[4];
     };
+    class CameraHelper
+    {
+    public:
+        // Convert lat/lng to mercator projection (normalized 0-1)
+        struct MercatorCoord {
+            double x, y;
+        };
+        // Convert mercator to tile coordinates at specific zoom level
+        struct TileCoord {
+            double x, y;
+        };
+    public: 
+        static double degToRad(double deg) 
+        {
+            return deg * M_PI / 180.0;
+        }
+        static MercatorCoord latLngToMercator(double lat, double lng) {
+            MercatorCoord coord;
+            coord.x = (lng + 180.0) / 360.0;
+            double latRad = degToRad(lat);
+            coord.y = (1.0 - log(tan(latRad) + 1.0 / cos(latRad)) / M_PI) / 2.0;
+            return coord;
+        }
+        static TileCoord mercatorToTile(const MercatorCoord& mercator, double zoom) {
+            double scale = pow(2.0, zoom);
+            TileCoord tile;
+            tile.x = mercator.x * scale;
+            tile.y = mercator.y * scale;
+            return tile;
+        }
+    private: 
+        CameraHelper();
+    };
     class TextureGuard
     {
         public: 
@@ -200,17 +236,53 @@ namespace gl {
             }
             if (tweakers.size() != 0) {
                 style::CustomDrawableTweaker* tweaker = static_cast<style::CustomDrawableTweaker*>(tweakers[0].get());
-                auto tile_matrix = tweaker->tile_matrix; 
-                threepp::Matrix4 tile_three_matrix; 
-                tile_three_matrix.fromArray(tile_matrix);
-                impl->camera->projectionMatrix = tile_three_matrix; 
-                impl->camera->projectionMatrixInverse.copy(impl->camera->projectionMatrix).invert();
-                impl->camera->updateMatrixWorld(true);
-                impl->camera->updateWorldMatrix(true,true);
-            }
-            impl->renderer->setSize(w_size);
-            impl->renderer->resetState();  
-            impl->render(); 
+                const auto& state = parameters.state;
+                auto tile_matrix = tweaker->tile_matrix;  
+                float aspect = parameters.state.getSize().aspectRatio(); 
+                double pitch = state.getPitch();
+                double bearing = state.getBearing();
+                impl->camera_raycast->aspect = aspect;
+                float fov = state.getFieldOfView();
+                auto nearZ = static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance());
+
+                //PROJECTION
+                mbgl::mat4 cameraToClipMatrix; 
+                state.cameraToClipMatrix(cameraToClipMatrix,
+                                    static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance()));
+                mbgl::mat4 cameraToClipMatrixInvert; 
+                matrix::invert(cameraToClipMatrixInvert, cameraToClipMatrix); 
+                //VIEW
+                mbgl::mat4 worldToCameraMatrix; 
+                state.getworldToCameraMatrix(worldToCameraMatrix); 
+
+                mbgl::mat4 matrix_for_tile;
+                state.matrixFor(matrix_for_tile, getTileID().value().toUnwrapped()); 
+                mbgl::mat4 matrix_view; 
+                matrix::multiply(matrix_view, worldToCameraMatrix, matrix_for_tile);
+
+                mbgl::mat4 matrix_view_invert; 
+                matrix::invert(matrix_view_invert, matrix_view); 
+
+                threepp::Matrix4 m_projection_matrix;
+                threepp::Matrix4 m_projection_matrix_invert;
+                threepp::Matrix4 m_view_matrix;
+                threepp::Matrix4 m_view_invert_matrix;
+
+                m_projection_matrix.fromArray(cameraToClipMatrix);
+                m_projection_matrix_invert.fromArray(cameraToClipMatrixInvert); 
+                m_view_matrix.fromArray(matrix_view);
+                m_view_invert_matrix.fromArray(matrix_view_invert); 
+
+                impl->camera->projectionMatrix = m_projection_matrix;
+                impl->camera->matrixWorldInverse = m_view_matrix; 
+                impl->camera->matrixWorld->copy(m_view_invert_matrix); 
+                impl->camera->projectionMatrixInverse = m_projection_matrix_invert; 
+                impl->camera->matrixAutoUpdate = false; 
+
+                }
+                impl->renderer->setSize(w_size);
+                impl->renderer->resetState();  
+                impl->render(); 
         }
     }
     void DrawableCustom::setIndexData(gfx::IndexVectorBasePtr, std::vector<UniqueDrawSegment> segments) {}
@@ -229,7 +301,6 @@ namespace gl {
                                                 gfx::IndexVectorBasePtr,
                                                 const SegmentBase* segments,
                                                 std::size_t segmentCount) {}
-
     DrawableCustom::Impl* DrawableCustom::getImpl() const {
         return impl.get();
     }

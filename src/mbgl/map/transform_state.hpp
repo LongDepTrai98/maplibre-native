@@ -113,7 +113,8 @@ public:
     // Matrix
     void matrixFor(mat4&, const UnwrappedTileID&) const;
     void getProjMatrix(mat4& matrix, uint16_t nearZ = 1, bool aligned = false) const;
-
+    void getworldToCameraMatrix(mat4& matrix) const; 
+    void cameraToClipMatrix(mat4& matrix, uint16_t nearZ = 1, bool aligned = false) const; 
     // Dimensions
     Size getSize() const;
     void setSize(const Size& size_);
@@ -224,13 +225,13 @@ public:
 
     FreeCameraOptions getFreeCameraOptions() const;
     void setFreeCameraOptions(const FreeCameraOptions& options);
+    ScreenCoordinate getCenterOffset() const;
 
 private:
     bool rotatedNorth() const;
 
     // Viewport center offset, from [size.width / 2, size.height / 2], defined
     // by |edgeInsets| in screen coordinates, with top left origin.
-    ScreenCoordinate getCenterOffset() const;
 
     LatLngBounds bounds;
 

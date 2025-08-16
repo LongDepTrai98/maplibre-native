@@ -11,7 +11,8 @@ namespace threepp
 	class Camera;
     class PerspectiveCamera;
     class Raycaster; 
-    };
+	class CameraHelper; 
+};
 namespace mbgl{
 namespace gl {
 	using namespace platform;
