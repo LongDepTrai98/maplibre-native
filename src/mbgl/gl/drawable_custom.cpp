@@ -234,7 +234,8 @@ namespace gl {
             if (!impl->renderer) {
                 impl->createRenderer(w_size);
             }
-            if (tweakers.size() != 0) {
+            if (tweakers.size() != 0) 
+            {
                 style::CustomDrawableTweaker* tweaker = static_cast<style::CustomDrawableTweaker*>(tweakers[0].get());
                 const auto& state = parameters.state;
                 auto tile_matrix = tweaker->tile_matrix;  
@@ -243,45 +244,37 @@ namespace gl {
                 double bearing = state.getBearing();
                 float fov = state.getFieldOfView();
                 auto nearZ = static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance());
-
                 //PROJECTION
                 mbgl::mat4 cameraToClipMatrix; 
-                state.cameraToClipMatrix(cameraToClipMatrix,
-                                    static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance()));
+                state.cameraToClipMatrix(cameraToClipMatrix, static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance()));
                 mbgl::mat4 cameraToClipMatrixInvert; 
                 matrix::invert(cameraToClipMatrixInvert, cameraToClipMatrix); 
                 //VIEW
                 mbgl::mat4 worldToCameraMatrix; 
                 state.getworldToCameraMatrix(worldToCameraMatrix); 
-
                 mbgl::mat4 matrix_for_tile;
                 state.matrixFor(matrix_for_tile, getTileID().value().toUnwrapped()); 
                 mbgl::mat4 matrix_view; 
                 matrix::multiply(matrix_view, worldToCameraMatrix, matrix_for_tile);
-
                 mbgl::mat4 matrix_view_invert; 
                 matrix::invert(matrix_view_invert, matrix_view); 
-
                 threepp::Matrix4 m_projection_matrix;
                 threepp::Matrix4 m_projection_matrix_invert;
                 threepp::Matrix4 m_view_matrix;
                 threepp::Matrix4 m_view_invert_matrix;
-
                 m_projection_matrix.fromArray(cameraToClipMatrix);
                 m_projection_matrix_invert.fromArray(cameraToClipMatrixInvert); 
                 m_view_matrix.fromArray(matrix_view);
                 m_view_invert_matrix.fromArray(matrix_view_invert); 
-
                 impl->camera->projectionMatrix = m_projection_matrix;
                 impl->camera->matrixWorldInverse = m_view_matrix; 
                 impl->camera->matrixWorld->copy(m_view_invert_matrix); 
                 impl->camera->projectionMatrixInverse = m_projection_matrix_invert; 
                 impl->camera->matrixAutoUpdate = false; 
-
-                }
-                impl->renderer->setSize(w_size);
-                impl->renderer->resetState();  
-                impl->render(); 
+            }
+            impl->renderer->setSize(w_size);
+            impl->renderer->resetState();  
+            impl->render(); 
         }
     }
     void DrawableCustom::setIndexData(gfx::IndexVectorBasePtr, std::vector<UniqueDrawSegment> segments) {}
