@@ -241,7 +241,6 @@ namespace gl {
                 float aspect = parameters.state.getSize().aspectRatio(); 
                 double pitch = state.getPitch();
                 double bearing = state.getBearing();
-                impl->camera_raycast->aspect = aspect;
                 float fov = state.getFieldOfView();
                 auto nearZ = static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance());
 
