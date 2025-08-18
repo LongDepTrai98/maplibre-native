@@ -71,20 +71,15 @@ namespace gl {
             else
                 glDisable(GL_CULL_FACE);
             glCullFace(cullface_mode); 
-        
             if (blend_enabled)
                 glEnable(GL_BLEND);
             else
                 glDisable(GL_BLEND);
             glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
-
             glLineWidth(line_width); 
-
             glDepthMask(depthMask_enabled); 
             glColorMask(color_mask[0], color_mask[1], color_mask[2], color_mask[3]); 
-
             glFrontFace(static_cast<GLenum>(frontFace));
-        
             glClearStencil(clearStencil);
             glStencilFunc(prevFunc_Stencil, prevRef_Stencil, static_cast<GLuint>(prevMask_Stencil));
             glGetIntegerv(GL_STENCIL_WRITEMASK, &prevMask_Stencil_Write);
@@ -93,7 +88,6 @@ namespace gl {
                 glEnable(GL_STENCIL_TEST);
             else
                 glDisable(GL_STENCIL_TEST);
-
             if (scisscor_enabled)
                 glEnable(GL_SCISSOR_TEST);
             else
@@ -269,7 +263,8 @@ namespace gl {
                 impl->camera->projectionMatrix = m_projection_matrix;
                 impl->camera->matrixWorldInverse = m_view_matrix; 
                 impl->camera->matrixWorld->copy(m_view_invert_matrix); 
-                impl->camera->projectionMatrixInverse = m_projection_matrix_invert; 
+                impl->camera->projectionMatrixInverse = m_projection_matrix_invert;
+                //impl->camera->matrixWorld->decompose(impl->camera->position, impl->camera->quaternion, impl->camera->scale);
                 impl->camera->matrixAutoUpdate = false; 
             }
             impl->renderer->setSize(w_size);
