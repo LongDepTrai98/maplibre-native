@@ -17,6 +17,7 @@ namespace mbgl
 			{
                 renderer = std::make_unique<threepp::GLRenderer>(w_size);
                 renderer->autoClear = false; 
+                renderer->localClippingEnabled = true;
             }
 			if (!camera)
 			{
