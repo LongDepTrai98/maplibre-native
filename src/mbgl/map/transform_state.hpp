@@ -226,6 +226,7 @@ public:
     FreeCameraOptions getFreeCameraOptions() const;
     void setFreeCameraOptions(const FreeCameraOptions& options);
     ScreenCoordinate getCenterOffset() const;
+    util::Camera& getCamera() const;
 
 private:
     bool rotatedNorth() const;
@@ -263,8 +264,7 @@ private:
 
     const mat4& getCoordMatrix() const;
     const mat4& getInvertedMatrix() const;
-
-private:
+ private:
     ConstrainMode constrainMode;
     ViewportMode viewportMode;
 

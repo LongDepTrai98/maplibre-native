@@ -18,6 +18,16 @@
 #include <cmath>
 namespace mbgl {
 namespace gl {
+
+    static void worldToLatLon(double x, double y, double z, double worldSize) {
+    // Tính longitude (dài)
+    double lon = (x / worldSize) * 360.0 - 180.0;
+
+    // Tính latitude (vĩ) ngược từ Mercator Y
+    double mercatorY = 0.5 - (y / worldSize);
+    double lat = 90.0 - 360.0 * std::atan(std::exp(-mercatorY * 2.0 * M_PI)) / M_PI;
+    }
+
     class StateGuard
     {
     public: 
@@ -211,11 +221,16 @@ namespace gl {
         setDepthType(gfx::DepthMaskType::ReadWrite);
         setRenderPass(RenderPass::Translucent); 
     }
+
     DrawableCustom::~DrawableCustom() {}
     void DrawableCustom::draw(PaintParameters& parameters) const {
         auto& context = static_cast<gl::Context&>(parameters.context);
         context.setDepthMode(parameters.depthModeFor3D());
         auto viewport = context.viewport.getCurrentValue().size; 
+        double verticalFov = 0.6435011087932844;
+        auto vertical_deg = threepp::math::radToDeg(0.6435011087932844); 
+        double horizontalFov = 2.0 * atan(tan(verticalFov * 0.5) * parameters.state.getSize().aspectRatio());
+        double horizontaldeg = threepp::math::radToDeg(horizontalFov); 
         //3d 
         auto lat_lon = parameters.transformParams.state.getLatLng(); 
         StateGuard guard; 
@@ -245,7 +260,8 @@ namespace gl {
                 matrix::invert(cameraToClipMatrixInvert, cameraToClipMatrix); 
                 //VIEW
                 mbgl::mat4 worldToCameraMatrix; 
-                state.getworldToCameraMatrix(worldToCameraMatrix); 
+                state.getworldToCameraMatrix(worldToCameraMatrix);
+                auto up_vector = state.getCamera().up(); 
                 mbgl::mat4 matrix_for_tile;
                 state.matrixFor(matrix_for_tile, getTileID().value().toUnwrapped()); 
                 mbgl::mat4 matrix_view; 

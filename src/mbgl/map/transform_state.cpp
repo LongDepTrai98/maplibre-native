@@ -396,6 +396,10 @@ const mat4& TransformState::getInvertedMatrix() const {
     return invertedMatrix;
 }
 
+util::Camera& TransformState::getCamera() const {
+    return camera; 
+}
+
 // MARK: - Dimensions
 
 Size TransformState::getSize() const {

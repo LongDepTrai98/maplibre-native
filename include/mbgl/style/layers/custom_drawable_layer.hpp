@@ -59,7 +59,7 @@ public:
     void updatePosMouseNor(float nor_x,float nor_y); 
     LayerGroupBasePtr& getLayerGroupBase(); 
 
-protected:
+public:
     std::string m_BuilderName{"custom-3d"}; 
     RenderLayer& layer;
     LayerGroupBasePtr& layerGroup;
