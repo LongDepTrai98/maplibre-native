@@ -11,7 +11,7 @@ namespace mbgl
 	namespace gl
 	{
 		DrawableCustom::Impl::Impl() {}
-        void DrawableCustom::Impl::createRenderer(threepp::WindowSize& w_size) 
+        void DrawableCustom::Impl::createRenderer(threepp::WindowSize w_size) 
 		{
             if (!renderer) 
 			{
@@ -19,24 +19,23 @@ namespace mbgl
                 renderer->autoClear = false; 
                 renderer->localClippingEnabled = true;
             }
-			if (!camera)
-			{
-                camera = std::make_unique<threepp::PerspectiveCamera>();
-			}
-            if (!scene) 
-			{
-                scene = std::make_unique<threepp::Scene>();
-            }
-            if (!ray)
-            {
-                ray = std::make_unique<threepp::Raycaster>(); 
-                ray->params.lineThreshold = 0.1f;
-            }
-             
         }
         void DrawableCustom::Impl::render() 
         {
             renderer->render(*scene, *camera); 
+        }
+        void DrawableCustom::Impl::createScene() 
+        {
+            if (!camera) {
+                camera = std::make_unique<threepp::PerspectiveCamera>();
+            }
+            if (!scene) {
+                scene = std::make_unique<threepp::Scene>();
+            }
+            if (!ray) {
+                ray = std::make_unique<threepp::Raycaster>();
+                ray->params.lineThreshold = 0.1f;
+            }
         }
         void DrawableCustom::Impl::setRayMouse(float norX, float norY) 
         {

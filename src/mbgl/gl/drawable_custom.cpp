@@ -220,6 +220,7 @@ namespace gl {
         setIs3D(true); 
         setDepthType(gfx::DepthMaskType::ReadWrite);
         setRenderPass(RenderPass::Translucent); 
+        impl->createScene(); 
     }
 
     DrawableCustom::~DrawableCustom() {}
@@ -280,7 +281,7 @@ namespace gl {
                 impl->camera->matrixWorldInverse = m_view_matrix; 
                 impl->camera->matrixWorld->copy(m_view_invert_matrix); 
                 impl->camera->projectionMatrixInverse = m_projection_matrix_invert;
-                impl->camera->matrixWorld->decompose(impl->camera->position, impl->camera->quaternion, impl->camera->scale);
+                //impl->camera->matrixWorld->decompose(impl->camera->position, impl->camera->quaternion, impl->camera->scale);
                 impl->camera->matrixAutoUpdate = false; 
             }
             impl->renderer->setSize(w_size);

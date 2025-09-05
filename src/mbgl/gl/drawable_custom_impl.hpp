@@ -22,8 +22,9 @@ namespace gl {
 			Impl(); 
 			~Impl() = default;
         public: 
-			void createRenderer(threepp::WindowSize& size); 
+			void createRenderer(threepp::WindowSize size); 
 			void render();
+            void createScene();
             void setRayMouse(float norX, float norY); 
 		public:
 			std::unique_ptr<threepp::GLRenderer> renderer{nullptr}; 
