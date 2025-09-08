@@ -212,6 +212,19 @@ namespace gl {
             GLint activeTextureUnit = 0;
     };
 
+    class GLPixelStoreGuard {
+    public:
+        GLPixelStoreGuard(GLenum pname)
+            : pname(pname) {
+            glGetIntegerv(pname, &oldValue);
+        }
+        ~GLPixelStoreGuard() { glPixelStorei(pname, oldValue); }
+
+    private:
+        GLenum pname;
+        GLint oldValue;
+    };
+
     DrawableCustom::DrawableCustom(std::string name_) : Drawable(std::move(name_)),impl(std::make_unique<Impl>())
     {
         draw_type = DrawableType::DrawableCustom;
@@ -234,11 +247,13 @@ namespace gl {
         double horizontaldeg = threepp::math::radToDeg(horizontalFov); 
         //3d 
         auto lat_lon = parameters.transformParams.state.getLatLng(); 
+        glDisable(GL_BLEND);
         StateGuard guard; 
         TextureGuard t_2d(GL_TEXTURE_2D); 
         TextureGuard t_cube(GL_TEXTURE_CUBE_MAP); 
         TextureGuard t_3d(GL_TEXTURE_3D); 
         TextureGuard t_2d_array(GL_TEXTURE_2D_ARRAY); 
+        GLPixelStoreGuard pixelStoreGuard(GL_UNPACK_ALIGNMENT); 
         {
             threepp::WindowSize w_size(viewport.width, viewport.height);
             if (!impl->renderer) {
