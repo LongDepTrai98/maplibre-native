@@ -13,12 +13,14 @@ namespace mbgl
 		DrawableCustom::Impl::Impl() {}
         void DrawableCustom::Impl::createRenderer(threepp::WindowSize w_size) 
 		{
-            if (!renderer) 
+            static std::unique_ptr<threepp::GLRenderer> rendererInstance;
+            if (!rendererInstance) 
 			{
-                renderer = std::make_unique<threepp::GLRenderer>(w_size);
-                renderer->autoClear = false; 
-                renderer->localClippingEnabled = true;
+                rendererInstance = std::make_unique<threepp::GLRenderer>(w_size);
+                rendererInstance->autoClear = false; 
+                rendererInstance->localClippingEnabled = true;
             }
+            renderer = rendererInstance.get(); 
         }
         void DrawableCustom::Impl::render() 
         {
