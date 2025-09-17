@@ -9,7 +9,7 @@
 #include <mbgl/gfx/drawable_builder.hpp>
 #include <mbgl/gfx/texture2d.hpp>
 #include <mbgl/gfx/context.hpp>
-
+#include <mbgl/gl/drawable_custom.hpp>
 #include <array>
 #include <memory>
 #include <optional>
@@ -53,7 +53,8 @@ public:
     std::size_t getDrawableCount() const;
     void setTileID(OverscaledTileID tileID);
     void addCustomDrawable();
-    void addCustomDrawableWithTile(mbgl::OverscaledTileID tileID); 
+    void addCustomDrawableWithTile(mbgl::OverscaledTileID tileID, 
+        mbgl::gl::DrawableCustom*& drawable); 
     void removeDrawable(const util::SimpleIdentity& id);
     /*USE FOR RAYCASTER*/
     void updatePosMouseNor(float nor_x,float nor_y); 

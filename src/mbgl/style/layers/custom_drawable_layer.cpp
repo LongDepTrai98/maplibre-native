@@ -134,8 +134,8 @@ void CustomDrawableLayerHost::Interface::addCustomDrawable() {
     }
 }
 
-void CustomDrawableLayerHost::Interface::addCustomDrawableWithTile(mbgl::OverscaledTileID tileID_) 
-{
+void CustomDrawableLayerHost::Interface::addCustomDrawableWithTile(mbgl::OverscaledTileID tileID_, 
+    mbgl::gl::DrawableCustom*& ptrDrawable) {
     setTileID(tileID_); 
     custom_builder.reset(); 
     custom_builder = createCustomBuilder(m_BuilderName);
@@ -145,9 +145,9 @@ void CustomDrawableLayerHost::Interface::addCustomDrawableWithTile(mbgl::Oversca
         TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
         drawable->setTileID(tileID.value());
         drawable->setIs3D(true);
+        ptrDrawable = static_cast<mbgl::gl::DrawableCustom*>(drawable.get()); 
         tileLayerGroup->addDrawable(RenderPass::Translucent, tileID.value(), std::move(drawable));
     }
-    TileLayerGroup* tileLayerGroup = static_cast<TileLayerGroup*>(layerGroup.get());
 }
 
 void CustomDrawableLayerHost::Interface::removeDrawable(const util::SimpleIdentity& id) {
