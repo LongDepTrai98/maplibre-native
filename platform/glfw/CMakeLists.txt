@@ -5,7 +5,7 @@ set(THREEPP_BUILD_EXAMPLES OFF)
 set(THREEPP_WITH_GLFW OFF) # Disable default GLFW backend as we use WxWidgets
 FetchContent_Declare(
         threepp
-        GIT_REPOSITORY https://github.com/markaren/threepp.git
+        GIT_REPOSITORY https://github.com/LongDepTrai98/threepp.git
 )
 FetchContent_MakeAvailable(threepp)
 

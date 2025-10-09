@@ -54,6 +54,7 @@ public:
     std::string id;
     std::string source;
     std::string sourceLayer;
+    std::string terrainSourceLayer; 
     Filter filter;
     float minZoom = -std::numeric_limits<float>::infinity();
     float maxZoom = std::numeric_limits<float>::infinity();

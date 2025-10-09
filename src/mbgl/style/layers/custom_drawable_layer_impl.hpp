@@ -32,5 +32,27 @@ public:
     expression::Dependency getDependencies() const noexcept override { return expression::Dependency::None; }
 };
 
+
+class TerrainDrawableLayer::Impl : public Layer::Impl {
+public:
+    Impl(const std::string& id, const std::string& terrainSourceId, std::unique_ptr<CustomDrawableLayerHost> host);
+
+    bool hasLayoutDifference(const Layer::Impl&) const override;
+    void stringifyLayout(rapidjson::Writer<rapidjson::StringBuffer>&) const override;
+
+    std::shared_ptr<CustomDrawableLayerHost> host;
+
+    DECLARE_LAYER_TYPE_INFO;
+};
+
+class CustomTerrainLayerProperties final : public LayerProperties {
+public:
+    explicit CustomTerrainLayerProperties(Immutable<TerrainDrawableLayer::Impl> impl)
+        : LayerProperties(std::move(impl)) {}
+
+    expression::Dependency getDependencies() const noexcept override { return expression::Dependency::None; }
+};
+
+
 } // namespace style
 } // namespace mbgl

@@ -143,7 +143,11 @@ void RasterDEMTile::setMask(TileMask&& mask) {
     }
 }
 
-void RasterDEMTile::setNecessity(TileNecessity necessity) {
+void RasterDEMTile::setNecessity(TileNecessity necessity) { // in order to avoid flashing seams between tiles, here we are initially
+    // populating a 1px border of pixels around the image with the data of the
+    // nearest pixel from the image. this data is eventually replaced when the
+    // tile's neighboring tiles are loaded and the accurate data can be
+    // backfilled using DEMData#backfillBorder
     loader.setNecessity(necessity);
 }
 

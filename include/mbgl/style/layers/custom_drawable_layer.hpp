@@ -44,7 +44,9 @@ public:
               const TransformState& state,
               const std::shared_ptr<UpdateParameters>& updateParameters,
               const RenderTree& renderTree,
-              UniqueChangeRequestVec& changes);
+              UniqueChangeRequestVec& changes,
+              std::shared_ptr<std::vector<std::reference_wrapper<const RenderTile>>> tileToRenderThisFrame, 
+              style::Layer::Impl* baseImpl);
     /**
      * @brief Get the drawable count
      *
@@ -72,18 +74,18 @@ public:
     std::unique_ptr<gfx::DrawableBuilder> createCustomBuilder(const std::string& name) const;
     std::unique_ptr<gfx::DrawableBuilder> custom_builder{nullptr}; 
     std::optional<OverscaledTileID> tileID;
+    std::shared_ptr<std::vector<std::reference_wrapper<const RenderTile>>> tileToRenderThisFrame{nullptr};
+    style::Layer::Impl* baseImpl{nullptr};
 };
 
 class CustomDrawableLayer final : public Layer {
 public:
     CustomDrawableLayer(const std::string& id, std::unique_ptr<CustomDrawableLayerHost> host);
-
     CustomDrawableLayer(const CustomDrawableLayer&) = delete;
     ~CustomDrawableLayer() final;
     class Impl;
     const Impl& impl() const;
     Mutable<Impl> mutableImpl() const;
-
 private:
     std::optional<conversion::Error> setPropertyInternal(const std::string& name,
                                                          const conversion::Convertible& value) final;
@@ -91,6 +93,24 @@ private:
     std::unique_ptr<Layer> cloneRef(const std::string& id) const final;
     Mutable<Layer::Impl> mutableBaseImpl() const final;
 };
+
+
+class TerrainDrawableLayer final : public Layer {
+public:
+    TerrainDrawableLayer(const std::string& id, const std::string& terrainSourceId, std::unique_ptr<CustomDrawableLayerHost> host);
+    TerrainDrawableLayer(const TerrainDrawableLayer&) = delete;
+    ~TerrainDrawableLayer() final;
+    class Impl;
+    const Impl& impl() const;
+    Mutable<Impl> mutableImpl() const;
+private:
+    std::optional<conversion::Error> setPropertyInternal(const std::string& name,
+                                                         const conversion::Convertible& value) final;
+    StyleProperty getProperty(const std::string&) const final;
+    std::unique_ptr<Layer> cloneRef(const std::string& id) const final;
+    Mutable<Layer::Impl> mutableBaseImpl() const final;
+};
+
 
 } // namespace style
 } // namespace mbgl

@@ -48,7 +48,6 @@ void DrawableBuilder::flush(gfx::Context& context) {
             // setup for wide vectors
             impl->setupForWideVectors(context, *this);
         }
-
         const auto& draw = getCurrentDrawable(/*createIfNone=*/true);
         draw->setEnabled(enabled);
         draw->setLineWidth(static_cast<int32_t>(lineWidth));

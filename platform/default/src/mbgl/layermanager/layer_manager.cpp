@@ -85,6 +85,7 @@ LayerManagerDefault::LayerManagerDefault() {
 #endif
 #if !defined(MLN_LAYER_CUSTOM_DRAWABLE_DISABLE_ALL)
     addLayerType(std::make_unique<CustomDrawableLayerFactory>());
+    addLayerType(std::make_unique<TerrainDrawableLayerFactory>());
 #endif
 }
 

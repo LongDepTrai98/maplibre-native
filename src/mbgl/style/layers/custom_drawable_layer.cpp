@@ -1,6 +1,5 @@
 #include <mbgl/style/layers/custom_drawable_layer.hpp>
 #include <mbgl/style/layers/custom_drawable_layer_impl.hpp>
-
 #include <mbgl/renderer/layers/render_custom_drawable_layer.hpp>
 #include <mbgl/style/layer_observer.hpp>
 #include <mbgl/gfx/context.hpp>
@@ -41,13 +40,20 @@ namespace style {
 using namespace shaders;
 
 namespace {
-const LayerTypeInfo typeInfoCustomDrawable{"custom-drawable",
+const LayerTypeInfo typeInfoCustomDrawableNotNeedSource{"custom-drawable",
                                            LayerTypeInfo::Source::NotRequired,
                                            LayerTypeInfo::Pass3D::Required,
                                            LayerTypeInfo::Layout::NotRequired,
                                            LayerTypeInfo::FadingTiles::NotRequired,
                                            LayerTypeInfo::CrossTileIndex::NotRequired,
                                            LayerTypeInfo::TileKind::NotRequired};
+const LayerTypeInfo typeInfoCustomDrawableNeedSource{"custom-drawable-terrain",
+                                                        LayerTypeInfo::Source::Required,
+                                                        LayerTypeInfo::Pass3D::Required,
+                                                        LayerTypeInfo::Layout::NotRequired,
+                                                        LayerTypeInfo::FadingTiles::NotRequired,
+                                                        LayerTypeInfo::CrossTileIndex::NotRequired,
+                                                        LayerTypeInfo::TileKind::RasterDEM};
 } // namespace
 
 
@@ -85,7 +91,7 @@ Mutable<Layer::Impl> CustomDrawableLayer::mutableBaseImpl() const {
 }
 
 const LayerTypeInfo* CustomDrawableLayer::Impl::staticTypeInfo() noexcept {
-    return &typeInfoCustomDrawable;
+    return &typeInfoCustomDrawableNotNeedSource;
 }
 
 CustomDrawableLayerHost::Interface::Interface(RenderLayer& layer_,
@@ -95,14 +101,18 @@ CustomDrawableLayerHost::Interface::Interface(RenderLayer& layer_,
                                               const TransformState& state_,
                                               const std::shared_ptr<UpdateParameters>& updateParameters_,
                                               const RenderTree& renderTree_,
-                                              UniqueChangeRequestVec& changes_)
+                                              UniqueChangeRequestVec& changes_,
+                                              std::shared_ptr<std::vector<std::reference_wrapper<const RenderTile>>> tileToRenderThisFrame_, 
+                                              style::Layer::Impl* baseImpl_)
     : layer(layer_),
       layerGroup(layerGroup_),
       context(context_),
       state(state_),
       updateParameters(updateParameters_),
       renderTree(renderTree_),
-      changes(changes_) {
+      changes(changes_),
+      tileToRenderThisFrame(tileToRenderThisFrame_),
+      baseImpl(baseImpl_){
     // ensure we have a default layer group set up
     if (!layerGroup) {
         if (auto aLayerGroup = context.createTileLayerGroup(
@@ -186,6 +196,41 @@ std::unique_ptr<gfx::DrawableBuilder> CustomDrawableLayerHost::Interface::create
     builder_->setEnableDepth(true);
     builder_->setRenderPass(RenderPass::Translucent);
     return builder_; 
+}
+
+TerrainDrawableLayer::TerrainDrawableLayer(const std::string& layerID,
+                                           const std::string& terrainSourceId,
+                                           std::unique_ptr<CustomDrawableLayerHost> host)
+    : Layer(makeMutable<Impl>(layerID, terrainSourceId, std::move(host))) {}
+
+TerrainDrawableLayer::~TerrainDrawableLayer() = default;
+const TerrainDrawableLayer::Impl& TerrainDrawableLayer::impl() const {
+    return static_cast<const Impl&>(*baseImpl);
+}
+
+Mutable<TerrainDrawableLayer::Impl> TerrainDrawableLayer::mutableImpl() const {
+    return makeMutable<Impl>(impl());
+}
+
+std::unique_ptr<Layer> TerrainDrawableLayer::cloneRef(const std::string&) const {
+    assert(false);
+    return nullptr;
+}
+
+std::optional<Error> TerrainDrawableLayer::setPropertyInternal(const std::string&, const Convertible&) {
+    return Error{"layer doesn't support this property"};
+}
+
+StyleProperty TerrainDrawableLayer::getProperty(const std::string&) const {
+    return {};
+}
+
+Mutable<Layer::Impl> TerrainDrawableLayer::mutableBaseImpl() const {
+    return staticMutableCast<Layer::Impl>(mutableImpl());
+}
+
+const LayerTypeInfo* TerrainDrawableLayer::Impl::staticTypeInfo() noexcept {
+    return &typeInfoCustomDrawableNeedSource;
 }
 
 } // namespace style

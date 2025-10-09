@@ -37,6 +37,8 @@ public: // gfx::Texture2D
 
     size_t numChannels() const noexcept override;
 
+     std::shared_ptr<PremultipliedImage> getImage() override; 
+
     void create() noexcept override;
 
     void upload(const void* pixelData, const Size& size_) noexcept override;

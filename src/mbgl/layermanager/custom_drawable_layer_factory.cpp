@@ -4,7 +4,6 @@
 #include <mbgl/renderer/layers/render_custom_drawable_layer.hpp>
 
 namespace mbgl {
-
 const style::LayerTypeInfo* CustomDrawableLayerFactory::getTypeInfo() const noexcept {
     return style::CustomDrawableLayer::Impl::staticTypeInfo();
 }
@@ -18,6 +17,20 @@ std::unique_ptr<style::Layer> CustomDrawableLayerFactory::createLayer(const std:
 std::unique_ptr<RenderLayer> CustomDrawableLayerFactory::createRenderLayer(
     Immutable<style::Layer::Impl> impl) noexcept {
     return std::make_unique<RenderCustomDrawableLayer>(staticImmutableCast<style::CustomDrawableLayer::Impl>(impl));
+}
+
+const style::LayerTypeInfo* TerrainDrawableLayerFactory::getTypeInfo() const noexcept {
+    return style::TerrainDrawableLayer::Impl::staticTypeInfo();
+}
+
+std::unique_ptr<style::Layer> TerrainDrawableLayerFactory::createLayer(const std::string& id, const style::conversion::Convertible& value) noexcept {
+    assert(false);
+    return nullptr;
+}
+
+std::unique_ptr<RenderLayer> TerrainDrawableLayerFactory::createRenderLayer(
+    Immutable<style::Layer::Impl> impl) noexcept {
+    return std::make_unique<RenderCustomDrawableTerrainLayer>(staticImmutableCast<style::TerrainDrawableLayer::Impl>(impl));
 }
 
 } // namespace mbgl

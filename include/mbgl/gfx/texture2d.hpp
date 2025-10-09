@@ -72,6 +72,8 @@ public:
     /// @return Size of a pixel, in bytes
     virtual size_t getPixelStride() const noexcept = 0;
 
+    ///Get image 
+    virtual std::shared_ptr<PremultipliedImage> getImage() = 0; 
     /// @brief Returns the number of color channels in the texture.
     /// @return Channel count
     virtual size_t numChannels() const noexcept = 0;

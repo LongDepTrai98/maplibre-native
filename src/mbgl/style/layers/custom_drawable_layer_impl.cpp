@@ -14,5 +14,20 @@ bool CustomDrawableLayer::Impl::hasLayoutDifference(const Layer::Impl&) const {
 
 void CustomDrawableLayer::Impl::stringifyLayout(rapidjson::Writer<rapidjson::StringBuffer>&) const {}
 
+
+TerrainDrawableLayer::Impl::Impl(const std::string& id_,
+                                 const std::string& terrainSourceId_,
+                                 std::unique_ptr<CustomDrawableLayerHost> host_)
+    : Layer::Impl(id_, std::string()) {
+    this->terrainSourceLayer = terrainSourceId_; 
+    host = std::move(host_);
+}
+
+bool TerrainDrawableLayer::Impl::hasLayoutDifference(const Layer::Impl&) const {
+    return false;
+}
+
+void TerrainDrawableLayer::Impl::stringifyLayout(rapidjson::Writer<rapidjson::StringBuffer>&) const {}
+
 } // namespace style
 } // namespace mbgl

@@ -3,7 +3,8 @@
 #include <mbgl/renderer/buckets/hillshade_bucket.hpp>
 #include <mbgl/actor/actor.hpp>
 #include <mbgl/util/premultiply.hpp>
-
+#include <thread>
+#include <iostream>
 namespace mbgl {
 
 RasterDEMTileWorker::RasterDEMTileWorker(const ActorRef<RasterDEMTileWorker>&, ActorRef<RasterDEMTile> parent_)

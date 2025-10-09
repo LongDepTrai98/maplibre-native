@@ -14,6 +14,7 @@ HillshadeBucket::HillshadeBucket(DEMData&& demdata_)
 
 HillshadeBucket::~HillshadeBucket() {
     sharedVertices->release();
+    demdata.releaseGeo(); 
 }
 
 const DEMData& HillshadeBucket::getDEMData() const {

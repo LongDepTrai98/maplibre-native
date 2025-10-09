@@ -68,6 +68,10 @@ size_t Texture2D::numChannels() const noexcept {
     }
 }
 
+std::shared_ptr<PremultipliedImage> Texture2D::getImage() {
+    return image; 
+}
+
 void Texture2D::allocateTexture() noexcept {
     MLN_TRACE_FUNC();
 
