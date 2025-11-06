@@ -178,6 +178,10 @@ void RenderCustomDrawableTerrainLayer::update(gfx::ShaderRegistry& shaders,
             {
                 continue; 
             }
+            if (!tile.getNeedsRendering())
+            {
+                continue; 
+            }
             auto* bucket_ = tile.getBucket(*baseImpl);
             if (!bucket_ || !bucket_->hasData()) {
                 removeTile(renderPass, tileID);
