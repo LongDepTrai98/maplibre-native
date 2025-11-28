@@ -216,7 +216,6 @@ void DrawableCustom::draw(PaintParameters& parameters) const {
     auto viewport = context.viewport.getCurrentValue().size;
     // 3d
     auto lat_lon = parameters.transformParams.state.getLatLng(); 
-    glDisable(GL_POLYGON_OFFSET_FILL);
     glDisable(GL_BLEND);
     {
         threepp::WindowSize w_size(viewport.width, viewport.height);
@@ -227,15 +226,10 @@ void DrawableCustom::draw(PaintParameters& parameters) const {
             style::CustomDrawableTweaker* tweaker = static_cast<style::CustomDrawableTweaker*>(tweakers[0].get());
             const auto& state = parameters.state;
             auto tile_matrix = tweaker->tile_matrix;
-            float aspect = parameters.state.getSize().aspectRatio();
-            double pitch = state.getPitch();
-            double bearing = state.getBearing();
-            float fov = state.getFieldOfView();
-            auto nearZ = static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance());
             // PROJECTION
             mbgl::mat4 cameraToClipMatrix;
-            state.cameraToClipMatrix(cameraToClipMatrix,
-                                     static_cast<uint16_t>(0.1 * state.getCameraToCenterDistance()));
+            uint16_t nearZ = 1; 
+            state.cameraToClipMatrix(cameraToClipMatrix, nearZ);
             mbgl::mat4 cameraToClipMatrixInvert;
             matrix::invert(cameraToClipMatrixInvert, cameraToClipMatrix);
             // VIEW
