@@ -217,6 +217,7 @@ void DrawableCustom::draw(PaintParameters& parameters) const {
     // 3d
     auto lat_lon = parameters.transformParams.state.getLatLng(); 
     glDisable(GL_BLEND);
+    //glDisable(GL_POLYGON_OFFSET_FILL);
     {
         threepp::WindowSize w_size(viewport.width, viewport.height);
         if (!impl->renderer) {

@@ -38,10 +38,6 @@ namespace mbgl
             if (!scene) {
                 scene = std::make_unique<threepp::Scene>();
             }
-            if (!ray) {
-                ray = std::make_unique<threepp::Raycaster>();
-                ray->params.lineThreshold = 0.1f;
-            }
             auto addLight_lambda = [&](threepp::Scene& scene) {
                 scene.add(threepp::AmbientLight::create(0xffffff, std::optional(0.6f)));
                 std::shared_ptr<threepp::Object3D> target = threepp::Object3D::create(); 
@@ -71,18 +67,11 @@ namespace mbgl
                 scene.add(target); 
                 
             }; 
-            addLight_lambda(*scene); 
+            //addLight_lambda(*scene); 
         }
         void DrawableCustom::Impl::setRayMouse(float norX, float norY) 
         {
-            if (ray)
-            {
-                ray->setFromCamera(threepp::Vector2(norX,norY),*camera); 
-                const auto intersects = ray->intersectObjects(scene->children);
-                if (intersects.size() != 0) {
-                    std::cout << "intersect" << std::endl;
-                };
-            }
+         
         }
 	}
 }
